@@ -16,7 +16,7 @@ record Language (Programs : Set) (Data : Set) : Set₁ where
         -- int-isFunctional : IsFunctional [_]≡
     
     [_]_≃ : Programs → Data → Maybe Data → Set
-    [ p ] x ≃ y = Σ[ f ∈ (Data → Maybe Data) ] (f x ≡ y)
+    [ p ] x ≃ y = Σ[ f ∈ (Data → Maybe Data) ] ([ p ]≡ f) × (f x ≡ y)
     
     has-program-as-data : Set
     has-program-as-data = Programs → Data
@@ -25,13 +25,11 @@ record Language (Programs : Set) (Data : Set) : Set₁ where
     has-pairing = Data → Data → Data
 
 
-open import WHILE
-    using (
-      [_]ᵂᴴᴵᴸᴱ≡
-    ) renaming (
+open import WHILE using () renaming (
       𝔻 to WHILE-data
     ; Programs to WHILE-programs
     ; program-to-data to WHILE-program-to-data
+    ; [_]≡ to [_]ᵂᴴᴵᴸᴱ≡
     )
 
 WHILE : Language WHILE-programs WHILE-data
