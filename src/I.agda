@@ -2,32 +2,33 @@
 module I where
 
 open import Agda.Builtin.Nat
-
+open import WHILE using (𝔻)
 
 -- Definition 3.7.1 --
 
-data Expressions : Set where
-    A : Expressions
-    nil : Expressions
-    cons : Expressions → Expressions → Expressions
-    hd tl : Expressions → Expressions
-    _=?_ : Expressions → Expressions → Expressions
+data Expression : Set where
+    A : Expression
+    nil : Expression
+    atom : 𝔻 → Expression
+    cons : Expression → Expression → Expression
+    hd tl : Expression → Expression
+    _=?_ : Expression → Expression → Expression
 
-data Commands : Set where
-    A:=_ : Expressions → Commands
-    _»_ : Commands → Commands → Commands
-    while_begin_end : Expressions → Commands → Commands
+data Command : Set where
+    A:=_ : Expression → Command
+    _»_ : Command → Command → Command
+    while_begin_end : Expression → Command → Command
 
 infix 21 A:=_
 infixl 20 _»_
 
-data Programs : Set where
-    read-to-A»_»write-from-A : Commands → Programs
+data Program : Set where
+    read-to-A»_»write-from-A : Command → Program
 
 
 -- Example 3.7.2 --
 
-reverse : Programs
+reverse : Program
 reverse =
     read-to-A»
         A:= cons A nil »                                    -- Y <- nil; A <- (X, Y);
@@ -41,6 +42,6 @@ reverse =
 
 -- Definition 3.7.3 --
 
-tl^ : Nat → Expressions → Expressions
+tl^ : Nat → Expression → Expression
 tl^ zero    E  = E
 tl^ (suc n) E = tl ((tl^ n) E)

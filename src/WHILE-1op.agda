@@ -1,28 +1,28 @@
 
-open import Agda.Builtin.Nat using (Nat)
+module WHILE-1op where
 
+open import Agda.Builtin.Nat using (Nat)
+open import WHILE using (𝔻)
 
 -- Definition 3.7.5 --
 
-data Expressions : Set where
-    var : Nat → Expressions
-    nil : Expressions
-    cons-var_-var_ : Nat → Nat → Expressions
-    hd-var_ tl-var_ : Nat → Expressions
-    var_=?var_ : Nat → Nat → Expressions
+data Expression : Set where
+    var : Nat → Expression
+    atom : 𝔻 → Expression
+    nil : Expression
+    cons-var_var_ : Nat → Nat → Expression
+    hd-var_ tl-var_ : Nat → Expression
+    var_=?var_ : Nat → Nat → Expression
 
-data Commands : Set where
-    var_:=_ : Nat → Expressions → Commands
-    _»_ : Commands → Commands → Commands
-    while-var_begin_end : Nat → Commands → Commands
+data Command : Set where
+    var_:=_ : Nat → Expression → Command
+    _»_ : Command → Command → Command
+    while-var_begin_end : Nat → Command → Command
 infix 21 var_:=_
 infixl 20 _»_
 
-data Programs : Set where
-    read-to-var_»_»write-from-var_ : Nat → Commands → Nat → Programs
+data Program : Set where
+    read-to-var_»_»write-from-var_ : Nat → Command → Nat → Program
 
 infix 19 read-to-var_»_»write-from-var_
-
-
--- Example 3.7.6 --
 
